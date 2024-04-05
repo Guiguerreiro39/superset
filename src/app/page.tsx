@@ -1,6 +1,7 @@
 import { CreatePost } from "@/app/_components/create-post";
 import { api } from "@/trpc/server";
 import { currentUser, SignInButton, SignOutButton } from "@clerk/nextjs";
+import { WorkoutList } from "./_components/workout-list";
 
 export default async function Home() {
   const user = await currentUser();
@@ -17,6 +18,7 @@ export default async function Home() {
           </div>
         )}
         {!user && <SignInButton>Login</SignInButton>}
+        <WorkoutList />
         <div className="flex flex-col items-center gap-2">
           <p className="text-2xl text-white">
             {hello ? hello.greeting : "Loading tRPC query..."}
