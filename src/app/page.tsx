@@ -4,7 +4,7 @@ export default async function Home() {
   const user = await currentUser();
 
   return (
-    <main className="">
+    <div>
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         {user && (
           <div>
@@ -14,6 +14,6 @@ export default async function Home() {
         )}
         {!user && <SignInButton>Login</SignInButton>}
       </div>
-    </main>
+    </div>
   );
 }

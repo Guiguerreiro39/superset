@@ -1,18 +1,35 @@
-import { api } from "@/trpc/server";
-import EmptyForm from "./empty-form";
+"use client";
+
+import { api } from "@/trpc/react";
 import { Badge } from "@/components/ui/badge";
 import { LandPlot } from "lucide-react";
 
-export const WorkoutList = async () => {
-  const plans = await api.plan.getAll();
+const WorkoutList = () => {
+  const plans = api.plan.getAll.useQuery();
 
-  const isEmpty = plans.length === 0;
+  const isEmpty = plans.isSuccess && plans.data.length === 0;
+
+  if (plans.isLoading) {
+    return (
+      <p className="w-full py-8 text-center font-semibold text-slate-500">
+        Loading...
+      </p>
+    );
+  }
+
+  if (isEmpty) {
+    return (
+      <p className="w-full py-8 text-center font-semibold text-slate-500">
+        There are no plans to show
+      </p>
+    );
+  }
 
   return (
-    <div>
+    <div className="">
       {!isEmpty && (
         <ul className="flex w-full flex-col gap-2">
-          {plans.map((plan) => (
+          {plans.data?.map((plan) => (
             <li
               key={plan.id}
               style={{
@@ -40,7 +57,8 @@ export const WorkoutList = async () => {
           ))}
         </ul>
       )}
-      {isEmpty && <EmptyForm />}
     </div>
   );
 };
+
+export default WorkoutList;
