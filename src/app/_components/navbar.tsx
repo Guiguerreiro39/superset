@@ -47,7 +47,7 @@ const NavAction = ({ icon: Icon, href }: NavActionType) => {
 
 const Navbar = () => {
   return (
-    <nav className="fixed bottom-0 grid h-20 w-full grid-cols-3 gap-4 bg-white px-4 py-2">
+    <nav className="absolute bottom-0 z-50 grid h-20 w-full grid-cols-3 gap-4 bg-white px-4 py-2">
       <NavItem icon={Home} href="/" label="Feed" />
       <NavAction icon={Plus} href="/workout" />
       <NavItem icon={CircleUserIcon} href="/profile" label="Profile" />

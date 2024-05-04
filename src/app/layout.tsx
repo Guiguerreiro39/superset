@@ -28,15 +28,15 @@ export default function RootLayout({
       <body
         className={cn(
           `font-sans ${inter.variable}`,
-          "overflow-x-hidden bg-slate-50",
+          "h-screen w-screen bg-slate-50",
         )}
       >
         <ClerkProvider>
           <TRPCReactProvider>
+            <Navbar />
             <PageTransition>
               <main className="mb-20 p-4">{children}</main>
             </PageTransition>
-            <Navbar />
           </TRPCReactProvider>
         </ClerkProvider>
       </body>
