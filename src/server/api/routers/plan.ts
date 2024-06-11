@@ -3,7 +3,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { planInputSchema } from "../schemas/plan";
+import { createInputSchema } from "../schemas/plan";
 
 export const planRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
@@ -27,7 +27,7 @@ export const planRouter = createTRPCRouter({
   }),
 
   create: protectedProcedure
-    .input(planInputSchema)
+    .input(createInputSchema)
     .mutation(async ({ ctx, input }) => {
       return ctx.db.plan.create({
         data: {

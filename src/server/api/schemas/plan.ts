@@ -1,5 +1,5 @@
 import { z } from "zod";
 
-export const planInputSchema = z.object({
+export const createInputSchema = z.object({
   name: z.string().min(1),
 });

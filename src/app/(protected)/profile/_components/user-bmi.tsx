@@ -22,8 +22,6 @@ const UserBMI = async () => {
   const weight = metadata?.weight as number;
   const bmi = weight / (height / 100) ** 2;
 
-  console.log(bmi);
-
   return (
     <div className="grid grid-cols-3 gap-2">
       <StatsComponent value={weight} unit="kg" />

@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(`font-sans ${inter.variable}`)}>
-        <div className="relative h-screen w-full overflow-auto bg-slate-50">
+        <div className="h-screen w-full overflow-auto bg-slate-50">
           <div
             className="fixed inset-0"
             style={{
@@ -38,7 +38,7 @@ export default function RootLayout({
           />
           <ClerkProvider>
             <TRPCReactProvider>
-              <div className="relative z-10 mx-auto min-h-screen w-full max-w-screen-sm overflow-x-hidden">
+              <div className="relative z-10 mx-auto h-screen w-full overflow-x-hidden">
                 <PageTransition>
                   <main className="mb-20 p-4">{children}</main>
                 </PageTransition>
