@@ -33,7 +33,7 @@ const WorkoutsMonthHistory = async () => {
 
   const monthlyWorkouts = await api.workout.getAllByDateRange({ lte: lastSunday, gte: firstMonday })
 
-  return (<div className="border-slate-200 border-2 rounded-md w-full grid grid-cols-7 gap-2 p-2">
+  return (<div className="w-full grid grid-cols-7 gap-2 p-2">
     {
       daysOfWeek.map(day => (
         <p key={day} className="text-center text-sm font-medium">{day}</p>
