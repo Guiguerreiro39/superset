@@ -8,7 +8,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { api } from "@/trpc/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -48,25 +47,26 @@ const NewPlanForm = ({ onSuccess }: NewPlanFormProps) => {
   return (<Form {...form}>
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="space-y-4 px-4 pb-4"
+      className="space-y-4"
     >
       <FormField
         control={form.control}
         name="name"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Plan name</FormLabel>
+            <div>
+              <FormLabel>Plan name</FormLabel>
+              <FormDescription>
+                This is the name of your plan.
+              </FormDescription>
+            </div>
             <FormControl>
               <Input placeholder="My awesome plan" {...field} />
             </FormControl>
-            <FormDescription>
-              This is the name of your plan.
-            </FormDescription>
             <FormMessage />
           </FormItem>
         )}
       />
-      <Separator />
       <Button type="submit" className="w-full">
         Create
       </Button>

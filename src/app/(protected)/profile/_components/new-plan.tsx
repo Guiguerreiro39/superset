@@ -1,37 +1,40 @@
-"use client";;
+"use client"
+
 import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { useState } from "react";
 import NewPlanForm from "./new-plan-form";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { useState } from "react";
+import { Separator } from "@/components/ui/separator";
 
 const NewPlan = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   return (
-    <Drawer open={open} onOpenChange={setOpen} shouldScaleBackground>
-      <DrawerTrigger className="w-full" asChild>
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger className="w-full" asChild>
         <Button className="w-full rounded-md">New plan</Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle className="text-left">
+      </SheetTrigger>
+      <SheetContent side="bottom" className="h-screen space-y-4">
+        <SheetHeader>
+          <SheetTitle>
             Create a new workout plan
-          </DrawerTitle>
-          <DrawerDescription className="text-left">
+          </SheetTitle>
+          <SheetDescription>
             This form will guide you through correctly structuring your new
             workout plan.
-          </DrawerDescription>
-        </DrawerHeader>
+          </SheetDescription>
+        </SheetHeader>
+        <Separator />
         <NewPlanForm onSuccess={() => setOpen(false)} />
-      </DrawerContent>
-    </Drawer>
+      </SheetContent>
+    </Sheet>
   );
 };
 
