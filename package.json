@@ -10,7 +10,6 @@
     "db:format": "prisma format",
     "db:generate": "prisma generate",
     "dev": "next dev",
-    "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start"
   },

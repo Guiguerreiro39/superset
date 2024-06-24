@@ -11,61 +11,65 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  name      String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model Exercise {
   id   Int    @id @default(autoincrement())
   name String
 
   CustomExercise CustomExercise[]
-  Workout        Workout?         @relation(fields: [workoutId], references: [id])
-  workoutId      Int?
 
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Set {
+  id   Int @id @default(autoincrement())
+  kg   Int
+  reps Int
+
+  CustomExercise   CustomExercise? @relation(fields: [customExerciseId], references: [id])
+  customExerciseId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model CustomExercise {
-  id       Int      @id @default(autoincrement())
-  exercise Exercise @relation(fields: [exerciseId], references: [id])
-  sets     Int
-  reps     Int
-  kg       Int
+  id Int @id @default(autoincrement())
 
+  sets       Set[]
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
   exerciseId Int
   Workout    Workout? @relation(fields: [workoutId], references: [id])
   workoutId  Int?
-  Plan       Plan?    @relation(fields: [planId], references: [id])
-  planId     Int?
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Workout {
-  id        Int              @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  exercises CustomExercise[]
-  plan      Plan             @relation(fields: [planId], references: [id])
-  planId    Int
-  Exercise  Exercise[]
+  basePlan        Plan?            @relation("BaseWorkout")
+  basePlanId      Int?
+  plan            Plan?            @relation("Workouts", fields: [planId], references: [id])
+  planId          Int?
+  customExercises CustomExercise[]
 
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([id, basePlanId])
+  @@unique([id, planId])
 }
 
 model Plan {
-  id        Int              @id @default(autoincrement())
-  name      String
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
 
-  workouts  Workout[]
-  exercises CustomExercise[]
+  workouts      Workout[] @relation("Workouts")
+  baseWorkout   Workout   @relation("BaseWorkout", fields: [baseWorkoutId], references: [id])
+  baseWorkoutId Int       @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
