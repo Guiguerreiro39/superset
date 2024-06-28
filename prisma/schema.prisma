@@ -63,13 +63,13 @@ model Workout {
 }
 
 model Plan {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
-  description String
+  description String?
 
   workouts      Workout[] @relation("Workouts")
-  baseWorkout   Workout   @relation("BaseWorkout", fields: [baseWorkoutId], references: [id])
-  baseWorkoutId Int       @unique
+  baseWorkout   Workout?  @relation("BaseWorkout", fields: [baseWorkoutId], references: [id])
+  baseWorkoutId Int?      @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

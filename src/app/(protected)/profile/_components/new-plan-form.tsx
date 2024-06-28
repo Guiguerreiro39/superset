@@ -13,11 +13,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(1, {
     message: "Name must not be empty.",
   }),
+  description: z.string().optional()
 });
 
 type NewPlanFormProps = {
@@ -25,23 +28,37 @@ type NewPlanFormProps = {
 }
 
 const NewPlanForm = ({ onSuccess }: NewPlanFormProps) => {
+  const { toast } = useToast()
   const utils = api.useUtils();
+
   const createPlan = api.plan.create.useMutation({
-    onSuccess: async () => {
-      await utils.plan.getAll.invalidate();
+    onSuccess: () => {
+      onSuccess?.()
+      toast({
+        title: "Plan has been created!"
+      })
     },
+    onSettled: () => {
+      utils.plan.getAll.invalidate();
+    },
+    onError: (error) => {
+      toast({
+        title: "Something wrong happened...",
+        description: `An error occured when trying to create your plan: ${error.message}`
+      })
+    }
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      description: ""
     },
   });
 
   const onSubmit = async (input: z.infer<typeof formSchema>) => {
     createPlan.mutate(input);
-    onSuccess?.()
   };
 
   return (<Form {...form}>
@@ -61,13 +78,31 @@ const NewPlanForm = ({ onSuccess }: NewPlanFormProps) => {
               </FormDescription>
             </div>
             <FormControl>
-              <Input placeholder="My awesome plan" {...field} />
+              <Input placeholder="Name" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
-      <Button type="submit" className="w-full">
+      <FormField
+        control={form.control}
+        name="description"
+        render={({ field }) => (
+          <FormItem>
+            <div>
+              <FormLabel>Plan description</FormLabel>
+              <FormDescription>
+                Give a quick introduction for this plan.
+              </FormDescription>
+            </div>
+            <FormControl>
+              <Textarea placeholder="Description" minLength={3} {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <Button type="submit" className="w-full" isLoading={createPlan.isPending}>
         Create
       </Button>
     </form>

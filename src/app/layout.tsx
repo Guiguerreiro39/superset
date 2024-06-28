@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import Navbar from "./_components/navbar";
 import PageTransition from "./transition";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ export default function RootLayout({
               <PageTransition>
                 <main className="mb-20 p-4">{children}</main>
               </PageTransition>
+              <Toaster />
               <Navbar />
             </div>
           </TRPCReactProvider>

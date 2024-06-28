@@ -1,12 +1,14 @@
-import { api } from "@/trpc/server";
+"use client"
+
+import { api } from "@/trpc/react";
 import PlanItem from "./plan-item";
 
 const PlansList = async () => {
-  const plans = await api.plan.getAll()
+  const plans = api.plan.getAll.useQuery()
 
-  const isEmpty = plans.length === 0;
+  if (plans.isLoading) return <PlansListSkeleton />
 
-  if (isEmpty) {
+  if (plans.data?.length === 0) {
     return (
       <p className="w-full py-8 text-center font-semibold text-slate-500">
         There are no plans to show
@@ -16,11 +18,18 @@ const PlansList = async () => {
 
   return (
     <ul className="flex w-full flex-col gap-2">
-      {plans.map((plan) => (
+      {plans.data?.map((plan) => (
         <PlanItem plan={plan} key={plan.id} />
       ))}
     </ul>
   );
 };
+
+export const PlansListSkeleton = () => (
+  <ul className="flex w-full flex-col gap-2">
+    <PlanItem.Skeleton />
+    <PlanItem.Skeleton />
+  </ul>
+)
 
 export default PlansList;

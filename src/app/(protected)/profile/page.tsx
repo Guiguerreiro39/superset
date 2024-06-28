@@ -2,12 +2,14 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import UserBMI from "./_components/user-bmi";
 import UserProfile from "./_components/user-profile";
 import NewPlan from "./_components/new-plan";
-import { Suspense, lazy } from "react";
-import Loading from "@/components/loading";
 import WorkoutsMonthHistory from "./_components/workouts-month-history";
 import ProfileTabs from "./_components/profile-tabs";
+import dynamic from 'next/dynamic'
+import { PlansListSkeleton } from "./_components/plans-list";
 
-const PlansList = lazy(() => import("./_components/plans-list"));
+const PlansList = dynamic(() => import("./_components/plans-list"), {
+  loading: () => <PlansListSkeleton />
+});
 
 export default function Home() {
   return (
@@ -19,9 +21,7 @@ export default function Home() {
       <ProfileTabs />
       <TabsContent value="plans" className="space-y-2">
         <NewPlan />
-        <Suspense fallback={<Loading />}>
-          <PlansList />
-        </Suspense>
+        <PlansList />
       </TabsContent>
       <TabsContent value="history" className="space-y-2">
         <WorkoutsMonthHistory />

@@ -17,9 +17,10 @@ export const planRouter = createTRPCRouter({
             id: true,
           },
         },
-        exercises: {
+        baseWorkout: {
           select: {
             id: true,
+            customExercises: true,
           },
         },
       },
@@ -32,6 +33,8 @@ export const planRouter = createTRPCRouter({
       return ctx.db.plan.create({
         data: {
           name: input.name,
+          description: input.description || "",
+          baseWorkoutId: input.baseWorkoutId,
         },
       });
     }),
