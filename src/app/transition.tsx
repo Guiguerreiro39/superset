@@ -36,7 +36,7 @@ export default function PageTransition({
           damping: 20,
         }}
       >
-        <FrozenRouter>{children}</FrozenRouter>
+        {children}
       </motion.div>
     </AnimatePresence>
   );

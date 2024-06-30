@@ -15,6 +15,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { SheetFooter } from "@/components/ui/sheet";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -35,7 +36,7 @@ const NewPlanForm = ({ onSuccess }: NewPlanFormProps) => {
     onSuccess: () => {
       onSuccess?.()
       toast({
-        title: "Plan has been created!"
+        title: "A new Plan has been created!"
       })
     },
     onSettled: () => {
@@ -64,44 +65,46 @@ const NewPlanForm = ({ onSuccess }: NewPlanFormProps) => {
   return (<Form {...form}>
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="space-y-4"
+      className="flex-1 flex flex-col justify-between"
     >
-      <FormField
-        control={form.control}
-        name="name"
-        render={({ field }) => (
-          <FormItem>
-            <div>
-              <FormLabel>Plan name</FormLabel>
-              <FormDescription>
-                This is the name of your plan.
-              </FormDescription>
-            </div>
-            <FormControl>
-              <Input placeholder="Name" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name="description"
-        render={({ field }) => (
-          <FormItem>
-            <div>
-              <FormLabel>Plan description</FormLabel>
-              <FormDescription>
-                Give a quick introduction for this plan.
-              </FormDescription>
-            </div>
-            <FormControl>
-              <Textarea placeholder="Description" minLength={3} {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <div className="space-y-4 mb-4">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <div>
+                <FormLabel>Plan name</FormLabel>
+                <FormDescription>
+                  This is the name of your plan.
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Input placeholder="Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <div>
+                <FormLabel>Plan description</FormLabel>
+                <FormDescription>
+                  Give a quick introduction for this plan.
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Textarea placeholder="Description" minLength={3} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
       <Button type="submit" className="w-full" isLoading={createPlan.isPending}>
         Create
       </Button>

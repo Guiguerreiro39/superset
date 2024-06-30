@@ -9,10 +9,16 @@ import {
   ToastViewport,
 } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
+import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 
 export function Toaster() {
+  const [_document, setDocument] = useState<Document>()
   const { toasts } = useToast()
+
+  useEffect(() => {
+    setDocument(document)
+  }, [])
 
   const content = (
     <ToastProvider>
@@ -34,5 +40,9 @@ export function Toaster() {
     </ToastProvider>
   )
 
-  return createPortal(content, document.body);
+  if (_document) {
+    return createPortal(content, _document?.body)
+  }
+
+  return null
 }

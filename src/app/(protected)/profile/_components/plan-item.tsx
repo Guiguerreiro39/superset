@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { planRouter } from "@/server/api/routers/plan";
 import { LandPlot } from "lucide-react";
 
@@ -33,16 +34,14 @@ const PlanItem = ({ plan }: PlanItemProps) => {
 }
 
 PlanItem.Skeleton = () => (
-  <li className="bg-slate-400 rounded-md">
-    <div className="animate-pulse flex flex-col justify-between p-4 shadow-inner min-h-[10rem]">
-      <div className="flex items-center gap-1">
-        <div className="w-12 h-5 rounded-full bg-slate-300" />
-        <div className="w-12 h-5 rounded-full bg-slate-300" />
-      </div>
-      <div className="flex flex-col gap-1">
-        <div className="w-32 h-5 bg-slate-300" />
-        <div className="w-20 h-4 bg-slate-300" />
-      </div>
+  <li className="bg-slate-400 rounded-md flex flex-col justify-between p-4 shadow-inner min-h-[10rem]">
+    <div className="flex items-center gap-1">
+      <Skeleton className="w-12 h-5 rounded-full bg-slate-300" />
+      <Skeleton className="w-12 h-5 rounded-full bg-slate-300" />
+    </div>
+    <div className="flex flex-col gap-1">
+      <Skeleton className="w-32 h-5 bg-slate-300" />
+      <Skeleton className="w-20 h-4 bg-slate-300" />
     </div>
   </li>
 )
