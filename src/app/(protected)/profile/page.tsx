@@ -4,7 +4,7 @@ import UserProfile from "./_components/user-profile";
 import NewPlan from "./_components/new-plan";
 import WorkoutsMonthHistory from "./_components/workouts-month-history";
 import ProfileTabs from "./_components/profile-tabs";
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 import { PlansListSkeleton } from "./_components/plans-list";
 
 const PlansList = dynamic(() => import("./_components/plans-list"), {
