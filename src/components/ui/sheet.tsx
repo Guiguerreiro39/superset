@@ -53,13 +53,14 @@ interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
   VariantProps<typeof sheetVariants> {
   fullscreen?: boolean
+  closeWithArrow?: boolean
   onClose?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = "right", className, children, fullscreen = false, onClose, ...props }, ref) => (
+>(({ side = "right", className, children, fullscreen = false, closeWithArrow = false, onClose, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay />
     <SheetPrimitive.Content
@@ -74,11 +75,11 @@ const SheetContent = React.forwardRef<
           onClose(e)
         }
       }} tabIndex={-1} className={cn("rounded-sm w-fit opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 dark:ring-offset-slate-950 dark:focus:ring-slate-300 dark:data-[state=open]:bg-slate-800", {
-        "mb-2": fullscreen,
-        "absolute right-4 top-4": !fullscreen
+        "mb-2": closeWithArrow,
+        "absolute right-4 top-4": !closeWithArrow
       })}>
         {
-          fullscreen ?
+          closeWithArrow ?
             <ArrowLeft className="h-5 w-5" /> : <X className="h-5 w-5" />
         }
         <span className="sr-only">Close</span>

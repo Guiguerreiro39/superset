@@ -22,7 +22,8 @@ export const newPlanformSchema = z.object({
       sets: z.object({
         reps: z.number().min(1, {
           message: "A set must have one rep or more."
-        })
+        }),
+        kg: z.number().optional()
       }).array().min(1, {
         message: "An exercise must have at least one set."
       }),
@@ -67,7 +68,10 @@ const NewPlanForm = ({ onClose, onNext, onPrevious, step, isReadyToSubmit }: New
     resolver: zodResolver(newPlanformSchema),
     defaultValues: {
       name: "",
-      description: ""
+      description: "",
+      baseWorkout: {
+        customExercises: []
+      }
     },
   });
 

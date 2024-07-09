@@ -3,7 +3,7 @@
 import { api } from "@/trpc/react";
 import PlanItem from "./plan-item";
 
-const PlansList = async () => {
+const PlansList = () => {
   const plans = api.plan.getAll.useQuery()
 
   if (plans.isLoading) return <PlansListSkeleton />

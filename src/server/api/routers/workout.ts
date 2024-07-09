@@ -1,5 +1,10 @@
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { getAllByDateRangeInputSchema } from "../schemas/workout";
+import { z } from "zod";
+
+const getAllByDateRangeInputSchema = z.object({
+  lte: z.date(),
+  gte: z.date(),
+});
 
 export const workoutRouter = createTRPCRouter({
   getAllByDateRange: publicProcedure

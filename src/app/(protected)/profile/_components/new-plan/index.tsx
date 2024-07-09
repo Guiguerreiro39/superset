@@ -34,7 +34,7 @@ const NewPlan = () => {
       <SheetTrigger className="w-full" asChild>
         <Button className="w-full rounded-md">New plan</Button>
       </SheetTrigger>
-      <SheetContent side="bottom" fullscreen className="flex flex-col gap-0" onClose={onClose}>
+      <SheetContent side="bottom" fullscreen closeWithArrow className="flex flex-col gap-0" onClose={onClose}>
         <div className="space-y-4 flex-1 flex flex-col">
           <SheetHeader>
             <SheetTitle>

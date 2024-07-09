@@ -3,7 +3,13 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { createInputSchema } from "../schemas/plan";
+import { z } from "zod";
+
+const createInputSchema = z.object({
+  name: z.string().min(1),
+  description: z.string().optional(),
+  baseWorkoutId: z.number().optional(),
+});
 
 export const planRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
