@@ -13,13 +13,13 @@ const NewExercise = () => {
       <Button variant="outline">Add a new exercise</Button>
     </SheetTrigger>
     <SheetContent side="bottom" fullscreen>
-      <div className="space-y-4">
+      <div className="space-y-4 h-full flex flex-col">
         <SheetHeader>
           <SheetTitle>
-            Add a new Exercise
+            Add new Exercises
           </SheetTitle>
           <SheetDescription>
-            Select an exercise or create a new one in order to add it to your new plan.
+            Select one or more exercises or create a new one in order to add it to your new plan.
           </SheetDescription>
         </SheetHeader>
         <CreateExerciseForm />

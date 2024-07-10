@@ -22,7 +22,7 @@ const NewExerciseDrawer = ({ name }: NewExerciseDrawerProps) => {
 
   return (<Drawer open={open} onOpenChange={setOpen}>
     <DrawerTrigger asChild>
-      <Button className="w-full">Create a new exercise</Button>
+      <Button variant="outline" className="w-full">Create a new exercise</Button>
     </DrawerTrigger>
     <DrawerContent>
       <div className="mx-auto w-full max-w-sm p-4">

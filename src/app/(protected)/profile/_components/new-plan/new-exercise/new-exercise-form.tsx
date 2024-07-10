@@ -18,8 +18,12 @@ const NewExerciseFormSchema = z.object({
 });
 
 const NewExerciseForm = ({ name, onSuccess }: NewExerciseProps) => {
+  const utils = api.useUtils()
   const createExercise = api.exercise.create.useMutation({
-    onSuccess
+    onSuccess: () => {
+      utils.exercise.getAllByQuery.invalidate()
+      onSuccess()
+    }
   })
 
   const form = useForm<z.infer<typeof NewExerciseFormSchema>>({

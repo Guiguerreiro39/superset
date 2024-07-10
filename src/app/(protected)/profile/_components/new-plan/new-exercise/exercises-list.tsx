@@ -9,6 +9,7 @@ import { createExerciseFormSchema } from "./create-exercise-form";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
+import { PropsWithChildren } from "react";
 
 type ExercisesListProps = {
   query: string
@@ -30,27 +31,21 @@ const ExercisesList = ({ query, control }: ExercisesListProps) => {
   }
 
   if (!query && exercises.data?.length === 0) {
-    return <div className="py-4 space-y-4">
-      <p className="w-full text-center font-semibold text-slate-500">
+    return <ExercisesList.Empty>
+      <ExercisesList.EmptyLabel>
         You haven't created an exercise yet.
-      </p>
+      </ExercisesList.EmptyLabel>
       <NewExerciseDrawer name={query} />
-    </div>
+    </ExercisesList.Empty>
   }
 
   if (query && exercises.data?.length === 0) {
-    return <div className="py-4 space-y-4">
-      <p className="w-full text-center font-semibold text-slate-500">
+    return <ExercisesList.Empty>
+      <ExercisesList.EmptyLabel>
         There is no exercise that contains "{query}".
-      </p>
+      </ExercisesList.EmptyLabel>
       <NewExerciseDrawer name={query} />
-    </div>
-  }
-
-  if (exercises.data?.length === 0) {
-    return <p className="w-full py-8 text-center font-semibold text-slate-500">
-      There are no exercises to show
-    </p>
+    </ExercisesList.Empty>
   }
 
   return (<div className="space-y-2">
@@ -61,7 +56,7 @@ const ExercisesList = ({ query, control }: ExercisesListProps) => {
         const onClick = isChecked ? () => remove(currentIndex) : () => append({ value: exercise.id })
 
         return (
-          <button key={exercise.id} type="button" onClick={onClick} className={cn("w-full border rounded border-slate-200 p-2 flex items-center justify-between gap-4", {
+          <button key={exercise.id} type="button" onClick={onClick} className={cn("w-full border transition-all duration-100 rounded border-slate-200 p-2 flex items-center justify-between gap-4", {
             "border-lime-600 border-2": isChecked
           })}>
             <div className="space-y-2">
@@ -83,8 +78,24 @@ const ExercisesList = ({ query, control }: ExercisesListProps) => {
         )
       })
     }
+    <ExercisesList.Empty>
+      <ExercisesList.EmptyLabel>
+        Didn't find what you're looking for?
+      </ExercisesList.EmptyLabel>
+      <NewExerciseDrawer name={query} />
+    </ExercisesList.Empty>
   </div>);
 }
+ExercisesList.Empty = ({ children }: PropsWithChildren) => (
+  <div className="py-4 space-y-4">
+    {children}
+  </div>
+)
+ExercisesList.EmptyLabel = ({ children }: PropsWithChildren) => (
+  <p className="w-full text-center font-semibold text-slate-500">
+    {children}
+  </p>
+)
 
 
 export default ExercisesList;

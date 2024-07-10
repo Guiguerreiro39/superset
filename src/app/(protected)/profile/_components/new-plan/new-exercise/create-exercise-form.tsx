@@ -8,6 +8,7 @@ import ExercisesList from "./exercises-list";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@uidotdev/usehooks";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 export const createExerciseFormSchema = z.object({
   query: z.string().min(1, {
@@ -23,8 +24,10 @@ const CreateExerciseForm = () => {
     resolver: zodResolver(createExerciseFormSchema),
     defaultValues: {
       query: "",
+      exercises: []
     },
   });
+  const exercises = form.watch("exercises")
 
   const debounceQuery = useDebounce(form.watch("query"), 300)
 
@@ -34,23 +37,31 @@ const CreateExerciseForm = () => {
 
   return (<Form {...form}>
     <form
-      onSubmit={form.handleSubmit(onSubmit)}
       className="flex-1 flex flex-col justify-between space-y-4"
     >
-      <FormField
-        control={form.control}
-        name="query"
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <Input placeholder="Search for an exercise" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <Separator />
-      <ExercisesList query={debounceQuery} control={form.control} />
+      <div className="space-y-4">
+        <FormField
+          control={form.control}
+          name="query"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Search for an exercise" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Separator />
+        <ExercisesList query={debounceQuery} control={form.control} />
+      </div>
+      {
+        exercises.length !== 0 &&
+        <Button type="submit" onClick={(e) => {
+          e.preventDefault()
+          form.handleSubmit(onSubmit)()
+        }}>Add {exercises.length}</Button>
+      }
     </form>
   </Form>)
 }
