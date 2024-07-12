@@ -53,7 +53,7 @@ const ExercisesList = ({ query, control }: ExercisesListProps) => {
       exercises.data?.map(exercise => {
         const currentIndex = fields.map(field => field.value).indexOf(exercise.id)
         const isChecked = currentIndex !== -1
-        const onClick = isChecked ? () => remove(currentIndex) : () => append({ value: exercise.id })
+        const onClick = isChecked ? () => remove(currentIndex) : () => append({ value: exercise.id, name: exercise.name })
 
         return (
           <button key={exercise.id} type="button" onClick={onClick} className={cn("w-full border transition-all duration-100 rounded border-slate-200 p-2 flex items-center justify-between gap-4", {

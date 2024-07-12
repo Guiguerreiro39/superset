@@ -16,6 +16,11 @@ const BaseWorkoutSetup = ({ control }: BaseWorkoutSetupProps) => {
   return (
     <>
       <NewExercise />
+      {
+        fields.map((customExercise) => (
+          <p key={customExercise.id}>{customExercise.exercise.name}</p>
+        ))
+      }
     </>
   );
 }

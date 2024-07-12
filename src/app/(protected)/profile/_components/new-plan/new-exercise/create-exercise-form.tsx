@@ -9,17 +9,24 @@ import { Input } from "@/components/ui/input";
 import { useDebounce } from "@uidotdev/usehooks";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { useContext } from "react";
+import { NewPlanContext } from "../new-plan-form";
+
+type CreateExerciseFormProps = {
+  onSuccess: () => void
+}
 
 export const createExerciseFormSchema = z.object({
-  query: z.string().min(1, {
-    message: "Name must not be empty.",
-  }),
+  query: z.string(),
   exercises: z.array(z.object({
-    value: z.number()
+    value: z.number(),
+    name: z.string()
   }))
 });
 
-const CreateExerciseForm = () => {
+const CreateExerciseForm = ({ onSuccess }: CreateExerciseFormProps) => {
+  const newPlanContext = useContext(NewPlanContext)
+
   const form = useForm<z.infer<typeof createExerciseFormSchema>>({
     resolver: zodResolver(createExerciseFormSchema),
     defaultValues: {
@@ -32,7 +39,15 @@ const CreateExerciseForm = () => {
   const debounceQuery = useDebounce(form.watch("query"), 300)
 
   const onSubmit = async (input: z.infer<typeof createExerciseFormSchema>) => {
-
+    const payload = input.exercises.map((exercise) => ({
+      sets: [],
+      exercise: {
+        id: exercise.value,
+        name: exercise.name
+      }
+    }))
+    newPlanContext?.setValue("baseWorkout.customExercises", [...newPlanContext.getValues("baseWorkout.customExercises"), ...payload])
+    onSuccess()
   };
 
   return (<Form {...form}>

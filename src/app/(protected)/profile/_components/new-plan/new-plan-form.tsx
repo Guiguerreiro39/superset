@@ -4,13 +4,14 @@ import {
   Form
 } from "@/components/ui/form";
 import { api } from "@/trpc/react";
-import { useForm } from "react-hook-form";
+import { UseFormGetValues, UseFormSetValue, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import PlanInformation from "./plan-information";
 import BaseWorkoutSetup from "./base-workout-setup";
+import { createContext } from "react";
 
 export const newPlanformSchema = z.object({
   name: z.string().min(1, {
@@ -27,8 +28,11 @@ export const newPlanformSchema = z.object({
       }).array().min(1, {
         message: "An exercise must have at least one set."
       }),
-      exercise: z.string().min(1, {
-        message: "Exercise must not be empty."
+      exercise: z.object({
+        name: z.string(),
+        id: z.number({
+          required_error: "You must add a valid exercise"
+        })
       })
     }).array()
   })
@@ -41,6 +45,13 @@ type NewPlanFormProps = {
   step: number
   isReadyToSubmit: boolean
 }
+
+type NewPlanContextType = {
+  setValue: UseFormSetValue<z.infer<typeof newPlanformSchema>>
+  getValues: UseFormGetValues<z.infer<typeof newPlanformSchema>>
+} | null
+
+export const NewPlanContext = createContext<NewPlanContextType>(null)
 
 const NewPlanForm = ({ onClose, onNext, onPrevious, step, isReadyToSubmit }: NewPlanFormProps) => {
   const { toast } = useToast()
@@ -79,32 +90,36 @@ const NewPlanForm = ({ onClose, onNext, onPrevious, step, isReadyToSubmit }: New
     createPlan.mutate(input);
   };
 
-  return (<Form {...form}>
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="flex-1 flex flex-col justify-between"
-    >
-      <div className="space-y-4 mb-4">
-        {step === 1 &&
-          <PlanInformation control={form.control} />
-        }
-        {step === 2 &&
-          <BaseWorkoutSetup control={form.control} />
-        }
-      </div>
-      {
-        isReadyToSubmit ?
-          <Button type="submit" className="w-full" isLoading={createPlan.isPending}>
-            Create
-          </Button> : <Button type="button" className="w-full" onClick={(e) => {
-            e.preventDefault()
-            onNext()
-          }}>
-            Next
-          </Button>
-      }
-    </form>
-  </Form>);
+  return (
+    <NewPlanContext.Provider value={{ setValue: form.setValue, getValues: form.getValues }}>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex-1 flex flex-col justify-between"
+        >
+          <div className="space-y-4 mb-4">
+            {step === 1 &&
+              <PlanInformation control={form.control} />
+            }
+            {step === 2 &&
+              <BaseWorkoutSetup control={form.control} />
+            }
+          </div>
+          {
+            isReadyToSubmit ?
+              <Button type="submit" className="w-full" isLoading={createPlan.isPending}>
+                Create
+              </Button> : <Button type="button" className="w-full" onClick={(e) => {
+                e.preventDefault()
+                onNext()
+              }}>
+                Next
+              </Button>
+          }
+        </form>
+      </Form>
+    </NewPlanContext.Provider>
+  );
 }
 
 export default NewPlanForm;
